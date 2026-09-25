@@ -1,29 +1,42 @@
-# AI Customer Service Chatbot
+# Customer Support Chatbot — Flask Prototype
 
-## How to Use
+A small web application exploring FAQ-guided conversational support. A browser chat interface sends questions to a Python backend, which combines the question with a short support FAQ before requesting a generated answer.
 
-1. Clone or upload this project to GitHub.
+## Implemented components
 
-2. To run locally:
-- Install dependencies:
-```
-pip install flask openai
-```
-- Set your OpenAI API key:
-```
-export OPENAI_API_KEY="your_api_key_here"
-```
-- Run the server:
-```
-python app.py
-```
-- Open `index.html` in your browser.
+- HTML, CSS, and JavaScript chat interface with keyboard submission.
+- Flask `POST /chat` endpoint accepting a JSON `message` field.
+- Prompt construction using example shipping, refund, and warranty policies.
+- Response rendering and basic request-failure messaging.
+- Server-side API-key configuration through `OPENAI_API_KEY`.
 
-3. To deploy:
-- Use [Render](https://render.com/) for the backend (Flask).
-- Use [Netlify](https://www.netlify.com/) for the frontend (static site).
+## Architecture
 
-## Chatbot Features
+```text
+Browser chat interface → Flask /chat endpoint → language-model API
+                             ↑
+                       embedded FAQ
+```
 
-- Answers customer questions using a custom FAQ.
-- Uses OpenAI's GPT model for natural responses.
+## Current status
+
+This repository is an early prototype, not a deployment-ready service. The backend currently calls `openai.Completion.create` with `text-davinci-003`; the integration requires migration before a working demonstration with a current API can be claimed. Dependencies are unpinned, and the Flask application does not currently serve `index.html`.
+
+Opening the HTML file directly is insufficient: its relative `/chat` request requires the frontend and backend to share an origin or an explicitly configured proxy.
+
+## Source guide
+
+| File | Purpose |
+| --- | --- |
+| `app.py` | FAQ, prompt construction, API request, and Flask route |
+| `index.html` | Chat interface and browser request handling |
+| `requirements.txt` | Python dependency list |
+
+## Development priorities
+
+1. Migrate the language-model request and pin compatible dependencies.
+2. Serve the frontend and API under one origin.
+3. Validate requests and handle errors without exposing internal details.
+4. Add tests for FAQ handling, invalid input, and upstream failures.
+
+The example support policies are demonstration data. The project does not establish answer accuracy, production reliability, or use by real customers.
